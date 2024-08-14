@@ -1,3 +1,85 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
 .head {
     background-color: coral;
+    display: flex;
+    justify-content: center;
+}
+
+.head-content {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 4rem;
+    padding: 1rem;
+    color: rgb(239, 36, 36);
+    text-shadow: 3px 3px 3px rgb(0, 0, 0);
+}
+
+.round-num {
+    display: flex;
+    justify-content: center;
+}
+
+.round-num-content {
+    padding: 5px;
+    padding-bottom: 2rem;
+    font-size: 0.6cm;
+    font-family: cursive;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.buttons-content {
+    height: 30vw;
+    width: 35vw;
+    display: flex;
+    flex-direction: column;
+    gap: 30%;
+}
+.rock {
+    width: 30%;
+    height: 40%;
+    padding: 5px;
+    border-radius: 100%;
+    align-self: center;
+}
+.paper-scissor {
+    display: flex;
+    gap: 40%;
+    height: 35%;
+}
+
+.paper {
+    border-radius: 100%;
+    width: 30%;
+    height: 100%;
+    padding: 2px;
+}
+.scissor {
+    width: 30%;
+    height: 100%;
+    padding: 10px;
+    border-radius: 100%;
+}
+
+.rock, .paper, .scissor {
+    border: 2px solid rgb(155, 114, 2);
+    background-color: rgb(222, 192, 84);
+    box-shadow: -0.9rem -0.9rem 1rem rgb(153, 121, 7) inset;
+    transition: ease 0.3s;
+    &:hover {
+        transform: scale(1.1);
+        transform-origin: bottom;
+        box-shadow: 0px 0.9rem 6px black, -0.9rem -0.9rem 1rem rgb(153, 121, 7) inset;
+    }
+    
+    &:active {
+        filter: brightness(0.5);
+        transition: filter 0s ease;
+    }
 }
