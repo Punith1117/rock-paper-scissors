@@ -1,10 +1,23 @@
+let cpoints = 0; //computer points
+let hpoints = 0; //human points
+let roundNumContent = 1;
+let humanScore = document.querySelector('#human');
+humanScore.textContent = 'You: ' + hpoints;
+let computerScore = document.querySelector('#computer');
+computerScore.textContent = 'Computer: ' + cpoints;
+let roundNum = document.querySelector('.round-num-content');
+roundNum.textContent = 'Round: ' + roundNumContent + '/5';
+let resultText = document.querySelector('.final-result-content');
+console.log(resultText);
+
+let noOfClicks = 0;
 function getCompChoice() {
     const choices = ['r', 'p', 's'];
     let n = Math.floor(Math.random()*choices.length);
     return choices[n];
 }
 
-function compareChoices(c, h) { //c: computer h: human
+function compareChoices(h, c) { //c: computer h: human
     if (h == 'r') {//rock beats scissor
         return (c =='s') ? 1 : (c == h) ? 0 : -1;
     }
@@ -16,38 +29,167 @@ function compareChoices(c, h) { //c: computer h: human
     }
 
 }
-alert("Refresh the page first and then open the console using ctrl+shift+C to view the results");
-alert('There will be three rounds with three attempts each');
-alert("Enter only the first letter of each word, that is r/R for Rock and similarly for Paper and Scissor")
-let hround = cround = 0; //set set human and computer round points to be 0
-for(let i = 1; i <= 3; i++) {
-    let cpoints = hpoints = 0; //set human and computer each round points to be 0
-    console.log(`Round: ${i}`)
-    for(let a = 1; a <= 3; a++) {
-        let hChoice = prompt(`Attempt: ${a} Enter your choice`); //get human choice
-        if (hChoice.toLowerCase() == 'r' || hChoice.toLowerCase() == 'p' || hChoice.toLowerCase() == 's') { //check if human choice is valid
-            console.log(`Your choice: ${hChoice}`);
-            let compChoice = getCompChoice(); //get computer choice
-            console.log(`Computer's choice: ${compChoice}`);
-            let result = compareChoices(compChoice, hChoice.toLowerCase());
-            if (result == 1) { //point to human
-                console.log(`You: ${++hpoints}`);
-                console.log(`Computer: ${cpoints}`);
-            } else if (result == -1) {
-                console.log(`You: ${hpoints}`); // point to computer
-                console.log(`Computer: ${++cpoints}`);
-            } else if (result == 0) { //tie
-                console.log(`You: ${hpoints}`);
-                console.log(`Computer: ${cpoints}`);
-            }
-        }
-        else {
-            alert('Invalid input. Only r,R,p,P,s,S is allowed.');
-        }
-    }
 
-    (cpoints > hpoints) ? (console.log(`Computer won Round ${i} :(`), cround++) : (cpoints < hpoints) ? (console.log(`You won Round ${i} :)`), hround++) : (console.log(`Round ${i} ends with a tie;)`));
+function display(result) {
+    if (result == 1) { //point to human
+        humanScore.textContent = `You: ${++hpoints}`;
+        computerScore.textContent = `Computer: ${cpoints}`;
+        resultText.textContent = '+1 for you :)';
+        resultText.classList.add('final-result-content-text');
+        setTimeout(() => {
+            resultText.classList.remove('final-result-content-text')}, 3000);
+    } else if (result == -1) { //point to computer
+        humanScore.textContent = `You: ${hpoints}`;
+        computerScore.textContent = `Computer: ${++cpoints}`;
+        resultText.textContent = '+1 for computer :(';
+        resultText.classList.add('final-result-content-text');
+        setTimeout(() => {
+            resultText.classList.remove('final-result-content-text')}, 3000);
+    } else if (result == 0) { //tie
+        humanScore.textContent = `You: ${++hpoints}`;
+        computerScore.textContent = `Computer: ${++cpoints}`;
+        resultText.textContent = '+1 for both :|';
+        resultText.classList.add('final-result-content-text');
+        setTimeout(() => {
+            resultText.classList.remove('final-result-content-text') }, 3000);
+    }
+    ++roundNumContent;
+    if (checkForLastRound()) {
+        return;
+    };
+    setTimeout(() => { roundNum.textContent = 'Round: ' + roundNumContent + '/5'}, 2000) 
 }
 
-(cround > hround) ? (console.log('Final result: Computer won :(')) : (cround < hround) ? (console.log('Final result: You won :)')) : (console.log("Final result: It's a tie :|"));
-console.log('Refresh the page to play again.');
+function checkForLastRound() {
+    if (roundNumContent == 6) {
+        if (hpoints == cpoints) {
+            resultText.innerHTML = 'The game ends with a tie :| <br> press F5 to play again';
+        } else if (hpoints > cpoints) {
+            resultText.innerHTML = 'You WON the game :) <br> press F5 to play again';
+        } else {
+            resultText.innerHTML = 'You LOSE the game :( <br> press F5 to play again';
+        }
+ 
+        resultText.classList.add('final-result-content-text');
+        setTimeout(() => {
+            resultText.classList.remove('final-result-content-text') }, 6000);
+        return true;
+    } else {
+        console.log('not a last round');
+    }
+}
+function addcompcolor(compChoice) {
+    if (compChoice == 'p') {
+        paper.classList.add('computercolor');
+
+    setTimeout(() => { //remove the class
+        paper.classList.remove('computercolor');
+    }, 1000);
+    }
+    if (compChoice == 'r') {
+        rock.classList.add('computercolor');
+
+    setTimeout(() => { //remove the class
+        rock.classList.remove('computercolor');
+    }, 1000);
+    }
+    if (compChoice == 's') {
+        scissor.classList.add('computercolor');
+
+    setTimeout(() => { //remove the class
+        scissor.classList.remove('computercolor');
+    }, 1000);
+    }
+}
+const paper = document.querySelector('.paper');
+paper.addEventListener('click', () => {
+    noOfClicks++;
+    console.log(noOfClicks);
+    // Add the class to start the animation
+    if (noOfClicks == 5) {
+        paper.disabled = true;
+        rock.disabled = true;
+        scissor.disabled = true;
+    } else {
+        paper.disabled = true;
+        rock.disabled = true;
+        scissor.disabled = true;
+    setTimeout(() => {
+        paper.disabled = false;
+        rock.disabled = false;
+        scissor.disabled = false;
+    }, 4000);
+    }
+    paper.classList.add('clickcolor');
+    let compChoice = getCompChoice();
+    setTimeout(() => { //remove the class
+        paper.classList.remove('clickcolor');
+        addcompcolor(compChoice);
+    }, 1000);
+
+    let result = compareChoices('p', compChoice);
+    console.log(result);
+    setTimeout(() => display(result), 2000);
+});
+const scissor = document.querySelector('.scissor');
+scissor.addEventListener('click', () =>{
+    noOfClicks++;
+    console.log(noOfClicks);
+    // Add the class to start the animation
+    if (noOfClicks == 5) {
+        paper.disabled = true;
+        rock.disabled = true;
+        scissor.disabled = true;
+    } else {
+        paper.disabled = true;
+        rock.disabled = true;
+        scissor.disabled = true;
+    setTimeout(() => {
+        paper.disabled = false;
+        rock.disabled = false;
+        scissor.disabled = false;
+    }, 4000);
+    }
+    // Add the class to start the animation
+    scissor.classList.add('clickcolor');
+    let compChoice = getCompChoice();
+    setTimeout(() => {
+        scissor.classList.remove('clickcolor');
+        addcompcolor(compChoice);
+    }, 1000);
+
+    let result = compareChoices('s', compChoice);
+    console.log(result);
+    setTimeout(() => display(result), 2000);
+});
+const rock = document.querySelector('.rock');
+rock.addEventListener('click', () =>{
+    noOfClicks++;
+    console.log(noOfClicks);
+    // Add the class to start the animation
+    if (noOfClicks == 5) {
+        paper.disabled = true;
+        rock.disabled = true;
+        scissor.disabled = true;
+    } else {
+        paper.disabled = true;
+        rock.disabled = true;
+        scissor.disabled = true;
+    setTimeout(() => {
+        paper.disabled = false;
+        rock.disabled = false;
+        scissor.disabled = false;
+    }, 4000);
+    }
+    // Add the class to start the animation
+    rock.classList.add('clickcolor');
+    let compChoice = getCompChoice();
+    setTimeout(() => {
+        rock.classList.remove('clickcolor');
+        addcompcolor(compChoice);
+    }, 1000);
+
+    let result = compareChoices('r', compChoice);
+    console.log(result);
+    setTimeout(() => display(result), 2000);
+});
